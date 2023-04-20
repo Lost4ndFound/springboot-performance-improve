@@ -1,0 +1,53 @@
+
+
+# 设置Undertow运行参数（可默认）
+server:
+  undertow:
+    threads:
+      # 设置IO线程数, 它主要执行非阻塞的任务,它们会负责多个连接, 默认设置每个CPU核心一个线程
+      # 不要设置过大，如果过大，启动项目会报错：打开文件数过多
+      io: 16
+      # 阻塞任务线程池, 当执行类似servlet请求阻塞IO操作, undertow会从这个线程池中取得线程
+      # 它的值设置取决于系统线程执行任务的阻塞系数，默认值是IO线程数*8
+      worker: 256
+    # 以下的配置会影响buffer,这些buffer会用于服务器连接的IO操作,有点类似netty的池化内存管理
+    # 每块buffer的空间大小,越小的空间被利用越充分，不要设置太大，以免影响其他应用，合适即可
+    buffer-size: 1024
+    # 是否分配的直接内存(NIO直接分配的堆外内存)
+    # 是否在 Java 堆外部分配缓冲区。缺省值派生自 JVM 可用的最大内存量。
+    direct-buffers: true
+    # HttpPost最大数据大小，默认为-1，不限制大小
+    max-http-post-size: -1B
+    # 是否应在启动时初始化 servlet 过滤器。默认为true
+    eager-filter-init: true
+    # 允许的最大查询或路径参数数。存在此限制是为了防止基于哈希冲突的 DOS 攻击。默认为1000
+    max-parameters: 1000
+    # 允许的最大标头数。存在此限制是为了防止基于哈希冲突的 DOS 攻击。默认200
+    max-headers: 200
+    # 允许的最大cookie数量。存在此限制是为了防止基于哈希冲突的 DOS 攻击
+    max-cookies: 200
+    # 服务器是否应解码百分比编码的斜杠字符。启用编码斜杠可能会产生安全隐患，因为不同的服务器对斜杠的解释不同。仅当您有需要它的旧版应用程序时才启用此功能,默认为false
+    allow-encoded-slash: false
+    # 是否应解码 URL。禁用后，URL 中的百分比编码字符将保持原样。默认为true
+    decode-url: true
+    # 用于解码 URL 的字符集。默认 UTF-8
+    url-charset: UTF-8
+    # 是否应将“Connection: keep-alive”标头添加到所有响应中，即使 HTTP 规范不需要。
+    always-set-keep-alive: true
+    # 在服务器关闭连接之前，连接可以处于空闲状态而不处理请求的时间量。
+#    no-request-timeout:
+    # 访问日志属性
+    accesslog:
+      # 是否启用访问日志，默认为false
+      enabled: false
+      # 访问日志格式模式，默认为common
+      pattern: common
+      # 日志文件前缀（文件名）
+      prefix: access_log.
+      # 日志文件后缀（扩展名）
+      suffix: log
+      # 日志文件夹
+      dir: logs
+      # 是否开启访问日志轮换，默认为true
+      rotate: true
+
